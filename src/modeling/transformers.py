@@ -181,15 +181,27 @@ class BertEmbeddings(nn.Module):
             position_ids = torch.arange(
                 seq_length, dtype=torch.long, device=device)
             position_ids = position_ids.unsqueeze(0).expand(input_shape)
+        # pdb.set_trace()
         if token_type_ids is None:
             token_type_ids = torch.zeros(
                 input_shape, dtype=torch.long, device=device)
+        # else:
+        #     semantic_info = token_type_ids
+        #     token_type_ids = torch.zeros(input_shape[1])
+        #     token_type_idxs = []
+        #     for info in semantic_info:
+        #         Obj,Rel,Verb = info
+        #         token_type_ids[[i+1 for i in Obj]] = 1
+        #         token_type_ids[[i+1 for i in Rel]] = 2
+        #         token_type_ids[[i+1 for i in Verb]] = 4
+        #         token_type_idxs.append(token_type_ids.long().to(device))
+        #     token_type_ids = torch.stack(token_type_idxs, 0)
 
         if inputs_embeds is None:
             inputs_embeds = self.word_embeddings(input_ids)
         position_embeddings = self.position_embeddings(position_ids)
         token_type_embeddings = self.token_type_embeddings(token_type_ids)
-
+        # pdb.set_trace()
         embeddings = (
             inputs_embeds + position_embeddings + token_type_embeddings)
         embeddings = self.LayerNorm(embeddings)
@@ -234,6 +246,7 @@ class BertSelfAttention(nn.Module):
         encoder_attention_mask=None,
     ):
         mixed_query_layer = self.query(hidden_states)
+        # pdb.set_trace()
 
         # If this is instantiated as a cross-attention module, the keys
         # and values come from an encoder; the attention mask needs to be
@@ -249,24 +262,29 @@ class BertSelfAttention(nn.Module):
         query_layer = self.transpose_for_scores(mixed_query_layer)
         key_layer = self.transpose_for_scores(mixed_key_layer)
         value_layer = self.transpose_for_scores(mixed_value_layer)
-
+        # pdb.set_trace()
         # Take the dot product between "query" and "key"
         # to get the raw attention scores.
         attention_scores = torch.matmul(
             query_layer, key_layer.transpose(-1, -2))
         attention_scores = attention_scores / math.sqrt(
             self.attention_head_size)
+        # pdb.set_trace()
         if attention_mask is not None:
             # Apply the attention mask is
             # (precomputed for all layers in BertModel forward() function)
-            attention_scores = attention_scores + attention_mask
+            if attention_scores.shape[3] == attention_mask.shape[3]:
+                # print(attention_scores.shape)
+                # print(attention_mask.shape)
+                attention_scores = attention_scores + attention_mask
 
         # Normalize the attention scores to probabilities.
         attention_probs = nn.Softmax(dim=-1)(attention_scores)
-
+        # pdb.set_trace()
         # This is actually dropping out entire tokens to attend to, which might
         # seem a bit unusual, but is taken from the original Transformer paper.
         attention_probs = self.dropout(attention_probs)
+        # torch.save(attention_probs, 'src/visualize/attn_demo/attn_T5ECU-14968.torch')
 
         # Mask heads if we want to
         if head_mask is not None:

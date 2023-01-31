@@ -47,7 +47,7 @@ class SharedConfigs(object):
             help="debug mode, output extra info & break all loops."
                  "0: disable, 1 enable")
         parser.add_argument(
-            "--data_ratio", type=float, default=1.0,
+            "--data_ratio", type=float, default=0.8,
             help="portion of train/val exampels to use,"
                  "e.g., overfit a small set of data")
 
@@ -325,11 +325,14 @@ class SharedConfigs(object):
             num_answers = 0
 
         if args.task in ["action", "transition"]:
-            args.num_labels = 5
+            args.num_labels = 4
             args.loss_type = "ce"
         elif args.task == "frameqa":
             args.num_labels = max(num_answers, 1540)
             args.loss_type = "ce"
+        elif args.task == "count":
+            args.num_labels = 1
+            args.loss_type = "mse"
         elif args.task == "msrvtt_qa":
             args.num_labels = max(num_answers, 1500)
             args.loss_type = "ce"

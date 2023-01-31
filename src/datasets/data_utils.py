@@ -347,14 +347,27 @@ def repeat_tensor_rows(raw_tensor, row_repeats):
         raw_tensor: (B, *)
         row_repeats: list(int), len(row_repeats) == len(raw_tensor)
     """
+    # print('=======')
+    # print(raw_tensor)
     assert len(raw_tensor) == len(raw_tensor), "Has to be the same length"
     if sum(row_repeats) == len(row_repeats):
         return raw_tensor
     else:
-        indices = torch.LongTensor(
-            flat_list_of_lists([[i] * r for i, r in enumerate(row_repeats)])
-        ).to(raw_tensor.device)
-        return raw_tensor.index_select(0, indices)
+        # indices = torch.LongTensor(
+        #     flat_list_of_lists([[i] * r for i, r in enumerate(row_repeats)])
+        # ).to(raw_tensor.device)
+        # return raw_tensor.index_select(0, indices)
+        return flat_list_of_lists([[raw_tensor[i] for j in range(r)] for i, r in enumerate(row_repeats)])
+
+
+def expand_forMC(raw_tensor, n_options):
+    bsz = raw_tensor.shape[0]
+    dim = raw_tensor.shape[-1]
+    raw_tensor = raw_tensor.unsqueeze(0)
+    raw_tensor = raw_tensor.index_select(0, torch.LongTensor([0] * n_options).to(raw_tensor.device))
+    raw_tensor_ep = raw_tensor.reshape(bsz * n_options, -1, dim)
+    return raw_tensor_ep
+
 
 
 

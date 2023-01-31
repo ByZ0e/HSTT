@@ -3,7 +3,7 @@ import json
 import zipfile
 import numpy as np
 import pickle
-
+import torch
 
 def load_pickle(filename):
     with open(filename, "rb") as f:
@@ -179,3 +179,34 @@ def get_ratio_from_counter(counter_obj, threshold=200):
 def get_rounded_percentage(float_number, n_floats=2):
     return round(float_number * 100, n_floats)
 
+
+def get_attention_mask(edge_list, num_row):
+    num_column = len(edge_list)
+    column_index_list = [[i] * len(edge_list[i]) for i in range(num_column)]
+    column_index_list = flat_list_of_lists(column_index_list)
+    row_index_list = flat_list_of_lists(edge_list)
+    index = (torch.LongTensor(row_index_list), torch.LongTensor(column_index_list))
+    value = torch.ones(len(column_index_list))
+    attention = torch.zeros([num_row, num_column]).index_put_((index), value)
+    # print(attention)
+    return attention
+
+
+def get_semantic_attention_mask(row_idx, column_idx, attn):
+    for idx in column_idx:
+        attn[row_idx, idx] = 0.0
+    return attn
+
+
+# attention = get_attention_mask(edge_list=[[1, 0], [3, 0], [0]], num_row=4)
+# mask = torch.zeros([8, 8])
+# ones = torch.ones([8, 5])
+# mask[:, :5] = ones
+# mask = torch.tensor([1,1,1,1,1,0,0,0])
+# mask = mask[None, :]
+# print(mask)
+#
+# edge_mask = torch.ones([8, 8])
+# edge_mask[:4, :3] = attention
+#
+# print(mask * edge_mask)
