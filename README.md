@@ -1,5 +1,5 @@
-# HSTT-demo
-Testing codes for 'Event Graph Guided Compositional Spatial-Temporal Reasoning for Video Question Answering' with paper ID 5195 under review in ECCV 2022 
+## Overview
+This repo contains source code for **Event Graph Guided Compositional Spatial-Temporal Reasoning for Video Question Answering**. In this work, propose a new learning framework, Hierarchical Spatial-Temporal Transformer for VideoQA (**HSTT**), to ground the multi-granularity visual concepts from the parsed **Event Graph** and combine them for compositional.
 
 ## Requirements 
 We provide a Docker image for easier reproduction. Please install the following:
@@ -17,7 +17,7 @@ We use mixed-precision training hence GPUs with Tensor Cores are recommended.
 
 1. Download the testing code and data.
     All of them can be downloaded from Google Drive:
-    `https://drive.google.com/file/d/1AMtua_z4GQvTf2P-qGor2BwdKWfZzHrH/view?usp=sharing`
+    `https://drive.google.com/file/d/1_dcy_XxkpFnlADar423eHxIYixvxs2QZ/view?usp=sharing`
 
 
 2. Launch the Docker container for running the experiments.
