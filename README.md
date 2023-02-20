@@ -1,5 +1,5 @@
 ## Overview
-This repo contains source code for **Event Graph Guided Compositional Spatial-Temporal Reasoning for Video Question Answering**. In this work, propose a new learning framework, Hierarchical Spatial-Temporal Transformer for VideoQA (**HSTT**), to ground the multi-granularity visual concepts from the parsed **Event Graph** and combine them for compositional.
+This repo contains source code for **Event Graph Guided Compositional Spatial-Temporal Reasoning for Video Question Answering**. In this work, propose a new learning framework, Hierarchical Spatial-Temporal Transformer for VideoQA (**HSTT**), to ground the multi-granularity visual concepts from the parsed **Event Graph** and combine them for compositional reasoning.
 
 ## Requirements 
 We provide a Docker image for easier reproduction. Please install the following:
@@ -45,3 +45,6 @@ We use mixed-precision training hence GPUs with Tensor Cores are recommended.
     The file `submission_star_8120.json` will be generated for submission.
     You can submit it to the STAR challenge online evaluation leaderboard `https://eval.ai/web/challenges/challenge-page/1325/overview` for evaluation.
 
+## Acknowledgment
+
+This code used resources from [transformers](https://github.com/huggingface/transformers), [ClipBERT](https://github.com/jayleicn/ClipBERT). The code is implemented using PyTorch, with multi-GPU support from Horovod and mixed precision support from apex. We thank the authors for open-sourcing their awesome projects.
