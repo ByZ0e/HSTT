@@ -10,13 +10,13 @@ if [ -z $CUDA_VISIBLE_DEVICES ]; then
     CUDA_VISIBLE_DEVICES='all'
 fi
 
-docker run --gpus '"'device=$CUDA_VISIBLE_DEVICES'"' --ipc=host --rm -it \
-    --mount src=$(pwd),dst=/clipbert,type=bind \
+docker run --gpus '"'device=$CUDA_VISIBLE_DEVICES'"' --ipc=host --rm -it --privileged=true \
+    --mount src=$(pwd),dst=/hstt,type=bind \
     --mount src=$OUTPUT,dst=/storage,type=bind \
     --mount src=$PRETRAIN_DIR,dst=/pretrain,type=bind,readonly \
     --mount src=$TXT_DB,dst=/txt,type=bind,readonly \
     --mount src=$IMG_DIR,dst=/img,type=bind,readonly \
     -e NVIDIA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES \
-    -w /clipbert jayleicn/clipbert:latest \
-    bash -c "source /clipbert/setup.sh && bash" \
+    -w /hstt hstt \
+    bash -c "source /hstt/setup.sh && bash" \
 
