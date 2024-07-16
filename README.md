@@ -1,6 +1,8 @@
 ## Overview
 This repo contains source code for **Event Graph Guided Compositional Spatial-Temporal Reasoning for Video Question Answering**. In this work, propose a new learning framework, Hierarchical Spatial-Temporal Transformer for VideoQA (**HSTT**), to ground the multi-granularity visual concepts from the parsed **Event Graph** and combine them for compositional reasoning.
 
+https://github.com/user-attachments/assets/76372cb1-1314-4c6d-b8a0-f11cfc10b64a
+
 ## Requirements 
 We provide a Docker image for easier reproduction. Please install the following:
   - [nvidia driver](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#package-manager-installation) (418+), 
